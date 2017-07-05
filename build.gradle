@@ -33,4 +33,6 @@ ext {
     versionName = '0.1.0'
 
     supportedLocales = ["en"]
+
+    supportLibraryVersion = '25.4.0'
 }
