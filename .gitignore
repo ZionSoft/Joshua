@@ -1,0 +1,24 @@
+# IntelliJ
+.idea
+*.iml
+
+# Gradle
+.gradle
+gradle.properties
+
+# Android Studio
+local.properties
+
+# Build Artifacts
+build
+gen
+out
+
+# Referenced Libraries
+libs
+
+# Mac
+.DS_Store
+
+# Key Store
+*.keystore

@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.google.com' }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha5'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://maven.google.com' }
+        jcenter()
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.1-milestone-1'
+}
+
+ext {
+    sourceJavaVersion = JavaVersion.VERSION_1_7
+    targetJavaVersion = JavaVersion.VERSION_1_7
+
+    compileSdkVersion = 25
+    buildToolsVersion = '26.0.0'
+
+    minSdkVersion = 16
+    targetSdkVersion = 26
+
+    versionCode = 100
+    versionName = '0.1.0'
+
+    supportedLocales = ["en"]
+}
