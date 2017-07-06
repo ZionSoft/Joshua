@@ -41,6 +41,7 @@ public class App extends BaseApp implements HasActivityInjector {
         super.onCreate();
 
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+        appComponent.inject(this);
     }
 
     @Override

@@ -18,8 +18,21 @@
 
 package net.zionsoft.joshua.injection;
 
-import dagger.Module;
+import android.app.Activity;
 
-@Module(subcomponents = {})
+import net.zionsoft.joshua.reading.ReadingActivity;
+import net.zionsoft.joshua.reading.ReadingSubcomponent;
+
+import dagger.Binds;
+import dagger.Module;
+import dagger.android.ActivityKey;
+import dagger.android.AndroidInjector;
+import dagger.multibindings.IntoMap;
+
+@Module(subcomponents = {ReadingSubcomponent.class})
 abstract class ActivityModule {
+    @Binds
+    @IntoMap
+    @ActivityKey(ReadingActivity.class)
+    abstract AndroidInjector.Factory<? extends Activity> bindReadingActivityInjectorFactory(ReadingSubcomponent.Builder builder);
 }

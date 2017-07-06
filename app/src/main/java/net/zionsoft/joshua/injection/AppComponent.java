@@ -18,6 +18,8 @@
 
 package net.zionsoft.joshua.injection;
 
+import net.zionsoft.joshua.App;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -28,4 +30,5 @@ import dagger.android.support.AndroidSupportInjectionModule;
 @Component(modules = {AppModule.class, ActivityModule.class, AndroidInjectionModule.class,
         AndroidSupportInjectionModule.class})
 public interface AppComponent {
+    void inject(App app);
 }

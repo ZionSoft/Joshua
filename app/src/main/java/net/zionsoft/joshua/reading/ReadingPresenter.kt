@@ -16,20 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.zionsoft.joshua;
+package net.zionsoft.joshua.reading
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import net.zionsoft.joshua.mvp.MVPPresenter
 
-import net.zionsoft.joshua.reading.ReadingActivity;
-
-public final class LauncherActivity extends Activity {
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        startActivity(ReadingActivity.newStartIntent(this));
-        finish();
-    }
+class ReadingPresenter : MVPPresenter<ReadingView>() {
 }

@@ -39,4 +39,5 @@ ext {
     supportLibraryVersion = '25.4.0'
 
     daggerVersion = '2.11'
+    butterKnifeVersion = '8.6.0'
 }

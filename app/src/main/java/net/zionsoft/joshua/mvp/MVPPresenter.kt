@@ -16,20 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.zionsoft.joshua;
+package net.zionsoft.joshua.mvp
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.CallSuper
 
-import net.zionsoft.joshua.reading.ReadingActivity;
+abstract class MVPPresenter<V : MVPView> {
+    private var view: V? = null
 
-public final class LauncherActivity extends Activity {
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected fun getView(): V? {
+        return view
+    }
 
-        startActivity(ReadingActivity.newStartIntent(this));
-        finish();
+    fun takeView(view: V) {
+        this.view = view
+        onViewTaken()
+    }
+
+    @CallSuper
+    protected fun onViewTaken() {
+    }
+
+    fun dropView() {
+        onViewDropped()
+        this.view = null;
+    }
+
+    @CallSuper
+    protected fun onViewDropped() {
     }
 }
