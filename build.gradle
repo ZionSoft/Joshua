@@ -34,7 +34,7 @@ ext {
 
     supportedLocales = ["en"]
 
-    kotlinVersion = '1.1.3'
+    kotlinVersion = '1.1.3-2'
 
     supportLibraryVersion = '25.4.0'
 
