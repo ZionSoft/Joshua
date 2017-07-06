@@ -34,5 +34,9 @@ ext {
 
     supportedLocales = ["en"]
 
+    kotlinVersion = '1.1.3'
+
     supportLibraryVersion = '25.4.0'
+
+    daggerVersion = '2.11'
 }
