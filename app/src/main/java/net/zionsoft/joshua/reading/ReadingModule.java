@@ -18,13 +18,15 @@
 
 package net.zionsoft.joshua.reading;
 
+import net.zionsoft.joshua.model.BibleReadingModel;
+
 import dagger.Module;
 import dagger.Provides;
 
 @Module
 public class ReadingModule {
     @Provides
-    ReadingPresenter provideReadingPresenter() {
-        return new ReadingPresenter();
+    ReadingPresenter provideReadingPresenter(BibleReadingModel bibleReadingModel) {
+        return new ReadingPresenter(bibleReadingModel);
     }
 }

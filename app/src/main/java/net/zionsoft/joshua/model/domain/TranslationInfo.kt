@@ -16,12 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.zionsoft.joshua.reading
+package net.zionsoft.joshua.model.domain
 
-import net.zionsoft.joshua.model.domain.TranslationInfo
-import net.zionsoft.joshua.mvp.MVPView
-
-interface ReadingView : MVPView {
-    fun onTranslationInfoLoaded(translationInfo: TranslationInfo)
-    fun onTranslationInfoLoadFailed()
+data class TranslationInfo(val name: String, val shortName: String, val books: List<BookInfo>) {
+    data class BookInfo(val index: Int, val name: String, val shortName: String, val chapterCount: Int)
 }
