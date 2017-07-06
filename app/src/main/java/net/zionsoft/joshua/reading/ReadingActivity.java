@@ -22,16 +22,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 
 import net.zionsoft.joshua.R;
 import net.zionsoft.joshua.utils.BaseActivity;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+
 public final class ReadingActivity extends BaseActivity implements ReadingView {
     public static Intent newStartIntent(Context context) {
         return new Intent(context, ReadingActivity.class);
     }
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Inject
     ReadingPresenter presenter;
