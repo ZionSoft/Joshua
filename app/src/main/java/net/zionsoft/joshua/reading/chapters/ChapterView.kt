@@ -16,23 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.zionsoft.joshua.reading;
+package net.zionsoft.joshua.reading.chapters
 
-import net.zionsoft.joshua.model.BibleReadingModel;
-import net.zionsoft.joshua.reading.chapters.ChapterPresenter;
+import net.zionsoft.joshua.model.domain.TranslationInfo
+import net.zionsoft.joshua.mvp.MVPView
 
-import dagger.Module;
-import dagger.Provides;
+interface ChapterView : MVPView {
+    fun onTranslationInfoLoaded(translationInfo: TranslationInfo)
 
-@Module
-public class ReadingModule {
-    @Provides
-    ReadingPresenter provideReadingPresenter() {
-        return new ReadingPresenter();
-    }
-
-    @Provides
-    ChapterPresenter provideChapterPresenter(BibleReadingModel bibleReadingModel) {
-        return new ChapterPresenter(bibleReadingModel);
-    }
+    fun onTranslationInfoLoadFailed()
 }

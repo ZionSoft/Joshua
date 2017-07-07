@@ -18,10 +18,7 @@
 
 package net.zionsoft.joshua.reading
 
-import net.zionsoft.joshua.model.domain.TranslationInfo
 import net.zionsoft.joshua.mvp.MVPView
 
 interface ReadingView : MVPView {
-    fun onTranslationInfoLoaded(translationInfo: TranslationInfo)
-    fun onTranslationInfoLoadFailed()
 }

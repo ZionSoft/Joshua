@@ -28,7 +28,7 @@
         </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>
 
-    <FrameLayout
+    <net.zionsoft.joshua.reading.chapters.ChapterListView
         android:id="@+id/chapters"
         android:layout_width="@dimen/left_drawer_width"
         android:layout_height="match_parent"

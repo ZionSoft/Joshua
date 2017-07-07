@@ -20,6 +20,7 @@ package net.zionsoft.joshua.model;
 
 import net.zionsoft.joshua.model.domain.Bible;
 import net.zionsoft.joshua.model.domain.TranslationInfo;
+import net.zionsoft.joshua.model.domain.VerseIndex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public final class BibleReadingModel {
     public BibleReadingModel() {
     }
 
-    public Single<TranslationInfo> loadTranslationInfo(String translationShortName) {
+    public Single<TranslationInfo> loadCurrentTranslation() {
         return Single.fromCallable(new Callable<TranslationInfo>() {
             @Override
             public TranslationInfo call() throws Exception {
@@ -111,5 +112,19 @@ public final class BibleReadingModel {
                 return new TranslationInfo("和合本圣经", "和合本", books);
             }
         });
+    }
+
+    public int getCurrentBook() {
+        // TODO
+        return 0;
+    }
+
+    public int getCurrentChapter() {
+        // TODO
+        return 0;
+    }
+
+    public void updateReadingProgress(VerseIndex verseIndex) {
+        // TODO
     }
 }

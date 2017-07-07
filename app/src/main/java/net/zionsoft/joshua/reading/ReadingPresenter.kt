@@ -18,43 +18,7 @@
 
 package net.zionsoft.joshua.reading
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
-import net.zionsoft.joshua.model.BibleReadingModel
-import net.zionsoft.joshua.model.domain.TranslationInfo
 import net.zionsoft.joshua.mvp.MVPPresenter
 
-class ReadingPresenter(private val bibleReadingModel: BibleReadingModel) : MVPPresenter<ReadingView>() {
-    private var loadTranslationInfo: Disposable? = null
-
-    override fun onViewDropped() {
-        disposeLoadTranslationInfo()
-        super.onViewDropped()
-    }
-
-    private fun disposeLoadTranslationInfo() {
-        if (loadTranslationInfo != null) {
-            loadTranslationInfo!!.dispose()
-            loadTranslationInfo = null
-        }
-    }
-
-    fun loadTranslationInfo(translationShortName: String) {
-        disposeLoadTranslationInfo()
-        loadTranslationInfo = bibleReadingModel.loadTranslationInfo(translationShortName)
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<TranslationInfo>() {
-                    override fun onSuccess(t: TranslationInfo) {
-                        loadTranslationInfo = null
-                        getView()?.onTranslationInfoLoaded(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        loadTranslationInfo = null
-                        getView()?.onTranslationInfoLoadFailed()
-                    }
-                })
-    }
+class ReadingPresenter : MVPPresenter<ReadingView>() {
 }
