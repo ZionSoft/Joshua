@@ -19,10 +19,13 @@
 package net.zionsoft.joshua.reading
 
 import net.zionsoft.joshua.model.domain.TranslationInfo
+import net.zionsoft.joshua.model.domain.VerseIndex
 import net.zionsoft.joshua.mvp.MVPView
 
 interface BaseReadingView : MVPView {
-    fun onCurrentTranslationInfoLoaded(translationInfo: TranslationInfo)
+    fun onReadingProgressUpdated(readingProgress: VerseIndex)
+
+    fun onCurrentTranslationInfoLoaded(currentTranslation: TranslationInfo)
 
     fun onCurrentTranslationInfoLoadFailed()
 }

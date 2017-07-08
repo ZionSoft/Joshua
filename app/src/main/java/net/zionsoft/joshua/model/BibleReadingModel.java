@@ -29,12 +29,20 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.subjects.BehaviorSubject;
 
 @Singleton
 public final class BibleReadingModel {
+    private final BehaviorSubject<VerseIndex> readingProgressSubject = BehaviorSubject.create();
+    private VerseIndex currentReadingProgress;
+
     @Inject
     public BibleReadingModel() {
+        // TODO Reads it from local storage.
+        currentReadingProgress = new VerseIndex(0, 0, 0);
+        readingProgressSubject.onNext(currentReadingProgress);
     }
 
     public Single<TranslationInfo> loadCurrentTranslation() {
@@ -115,16 +123,20 @@ public final class BibleReadingModel {
     }
 
     public int getCurrentBook() {
-        // TODO
-        return 0;
+        return currentReadingProgress.getBook();
     }
 
     public int getCurrentChapter() {
-        // TODO
-        return 0;
+        return currentReadingProgress.getChapter();
     }
 
     public void updateReadingProgress(VerseIndex verseIndex) {
-        // TODO
+        // TODO Saves it to local storage.
+        currentReadingProgress = verseIndex;
+        readingProgressSubject.onNext(verseIndex);
+    }
+
+    public Observable<VerseIndex> observeReadingProgress() {
+        return readingProgressSubject;
     }
 }

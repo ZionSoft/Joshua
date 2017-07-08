@@ -23,10 +23,13 @@ import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import net.zionsoft.joshua.R
 import net.zionsoft.joshua.model.domain.TranslationInfo
+import net.zionsoft.joshua.model.domain.VerseIndex
 
 class ReadingToolbar : Toolbar, ToolbarView {
-    private val builder = StringBuilder()
     private var presenter: ToolbarPresenter? = null
+
+    private val builder = StringBuilder()
+    private var currentTranslation: TranslationInfo? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -44,14 +47,27 @@ class ReadingToolbar : Toolbar, ToolbarView {
         setTitle(R.string.app_name)
     }
 
-    override fun onCurrentTranslationInfoLoaded(translationInfo: TranslationInfo) {
+    override fun onReadingProgressUpdated(readingProgress: VerseIndex) {
+        updateTitle()
+    }
+
+    private fun updateTitle() {
+        if (currentTranslation == null) {
+            return
+        }
+
         synchronized(builder, {
             builder.setLength(0)
 
-            val currentBook = translationInfo.books.get(presenter?.getCurrentBook() ?: 0)
+            val currentBook = currentTranslation!!.books.get(presenter?.getCurrentBook() ?: 0)
             builder.append(currentBook.shortName).append(", ").append((presenter?.getCurrentChapter() ?: 0) + 1)
             title = builder.toString()
         })
+    }
+
+    override fun onCurrentTranslationInfoLoaded(currentTranslation: TranslationInfo) {
+        this.currentTranslation = currentTranslation
+        updateTitle()
     }
 
     override fun onCurrentTranslationInfoLoadFailed() {

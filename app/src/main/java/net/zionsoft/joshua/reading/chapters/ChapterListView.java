@@ -31,6 +31,7 @@ import android.widget.ExpandableListView;
 
 import net.zionsoft.joshua.R;
 import net.zionsoft.joshua.model.domain.TranslationInfo;
+import net.zionsoft.joshua.model.domain.VerseIndex;
 
 public class ChapterListView extends ExpandableListView implements ChapterView,
         ChapterListAdapter.Listener, ExpandableListView.OnGroupClickListener {
@@ -76,14 +77,14 @@ public class ChapterListView extends ExpandableListView implements ChapterView,
     }
 
     @Override
-    public void onCurrentTranslationInfoLoaded(@NonNull TranslationInfo translationInfo) {
-        chapterListAdapter.setTranslationInfo(translationInfo);
-        chapterListAdapter.notifyDataSetChanged();
-    }
+    public void onReadingProgressUpdated(@NonNull VerseIndex readingProgress) {
+        if (currentBook == readingProgress.getBook() && currentChapter == readingProgress.getChapter()) {
+            return;
+        }
 
-    @Override
-    public void onCurrentTranslationInfoLoadFailed() {
-        // TODO
+        currentBook = readingProgress.getBook();
+        currentChapter = readingProgress.getChapter();
+        refresh();
     }
 
     private void refresh() {
@@ -93,6 +94,17 @@ public class ChapterListView extends ExpandableListView implements ChapterView,
         lastExpandedGroup = currentBook;
         expandGroup(currentBook);
         setSelectedGroup(currentBook);
+    }
+
+    @Override
+    public void onCurrentTranslationInfoLoaded(@NonNull TranslationInfo currentTranslation) {
+        chapterListAdapter.setTranslationInfo(currentTranslation);
+        chapterListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCurrentTranslationInfoLoadFailed() {
+        // TODO
     }
 
     @Override
