@@ -25,11 +25,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 
 import net.zionsoft.joshua.R;
 import net.zionsoft.joshua.reading.chapters.ChapterListView;
 import net.zionsoft.joshua.reading.chapters.ChapterPresenter;
+import net.zionsoft.joshua.reading.toolbar.ReadingToolbar;
+import net.zionsoft.joshua.reading.toolbar.ToolbarPresenter;
 import net.zionsoft.joshua.utils.BaseActivity;
 
 import javax.inject.Inject;
@@ -45,13 +46,16 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
     DrawerLayout drawerLayout;
 
     @BindView(R.id.toolbar)
-    Toolbar toolbar;
+    ReadingToolbar toolbar;
 
     @BindView(R.id.chapters)
     ChapterListView chapters;
 
     @Inject
     ReadingPresenter presenter;
+
+    @Inject
+    ToolbarPresenter toolbarPresenter;
 
     @Inject
     ChapterPresenter chapterPresenter;
@@ -67,6 +71,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, 0, 0);
         drawerLayout.addDrawerListener(drawerToggle);
 
+        toolbar.setPresenter(toolbarPresenter);
         chapters.setPresenter(chapterPresenter);
     }
 
@@ -81,12 +86,14 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
     protected void onStart() {
         super.onStart();
         presenter.takeView(this);
+        toolbar.onStart();
         chapters.onStart();
     }
 
     @Override
     protected void onStop() {
         presenter.dropView();
+        toolbar.onStop();
         chapters.onStop();
         super.onStop();
     }

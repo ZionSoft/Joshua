@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.zionsoft.joshua.reading.chapters
+package net.zionsoft.joshua.reading.toolbar
 
 import net.zionsoft.joshua.reading.BaseReadingView
 
-interface ChapterView : BaseReadingView {
+interface ToolbarView : BaseReadingView {
 }

@@ -76,13 +76,13 @@ public class ChapterListView extends ExpandableListView implements ChapterView,
     }
 
     @Override
-    public void onTranslationInfoLoaded(@NonNull TranslationInfo translationInfo) {
+    public void onCurrentTranslationInfoLoaded(@NonNull TranslationInfo translationInfo) {
         chapterListAdapter.setTranslationInfo(translationInfo);
         chapterListAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onTranslationInfoLoadFailed() {
+    public void onCurrentTranslationInfoLoadFailed() {
         // TODO
     }
 
