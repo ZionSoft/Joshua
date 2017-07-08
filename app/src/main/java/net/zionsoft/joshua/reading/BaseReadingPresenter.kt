@@ -29,12 +29,12 @@ abstract class BaseReadingPresenter<V : BaseReadingView>(protected val bibleRead
                 .subscribeWith(object : DisposableSingleObserver<TranslationInfo>() {
                     override fun onSuccess(t: TranslationInfo) {
                         loadCurrentTranslation = null
-                        getView()?.onCurrentTranslationInfoLoaded(t)
+                        view?.onCurrentTranslationInfoLoaded(t)
                     }
 
                     override fun onError(e: Throwable) {
                         loadCurrentTranslation = null
-                        getView()?.onCurrentTranslationInfoLoadFailed()
+                        view?.onCurrentTranslationInfoLoadFailed()
                     }
                 })
     }

@@ -21,11 +21,8 @@ package net.zionsoft.joshua.mvp
 import android.support.annotation.CallSuper
 
 abstract class MVPPresenter<V : MVPView> {
-    private var view: V? = null
-
-    protected fun getView(): V? {
-        return view
-    }
+    protected var view: V? = null
+        private set
 
     fun takeView(view: V) {
         this.view = view
