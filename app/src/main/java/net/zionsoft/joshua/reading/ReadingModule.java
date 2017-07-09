@@ -21,6 +21,7 @@ package net.zionsoft.joshua.reading;
 import net.zionsoft.joshua.model.BibleReadingModel;
 import net.zionsoft.joshua.reading.chapters.ChapterPresenter;
 import net.zionsoft.joshua.reading.toolbar.ToolbarPresenter;
+import net.zionsoft.joshua.reading.verses.VersePresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -40,5 +41,10 @@ public class ReadingModule {
     @Provides
     ChapterPresenter provideChapterPresenter(BibleReadingModel bibleReadingModel) {
         return new ChapterPresenter(bibleReadingModel);
+    }
+
+    @Provides
+    VersePresenter provideVersePresenter(BibleReadingModel bibleReadingModel) {
+        return new VersePresenter(bibleReadingModel);
     }
 }

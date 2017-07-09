@@ -31,6 +31,8 @@ import net.zionsoft.joshua.reading.chapters.ChapterListView;
 import net.zionsoft.joshua.reading.chapters.ChapterPresenter;
 import net.zionsoft.joshua.reading.toolbar.ReadingToolbar;
 import net.zionsoft.joshua.reading.toolbar.ToolbarPresenter;
+import net.zionsoft.joshua.reading.verses.VersePresenter;
+import net.zionsoft.joshua.reading.verses.VerseViewPager;
 import net.zionsoft.joshua.utils.BaseActivity;
 
 import javax.inject.Inject;
@@ -51,6 +53,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
     @BindView(R.id.chapters)
     ChapterListView chapters;
 
+    @BindView(R.id.verses)
+    VerseViewPager verses;
+
     @Inject
     ReadingPresenter presenter;
 
@@ -59,6 +64,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
 
     @Inject
     ChapterPresenter chapterPresenter;
+
+    @Inject
+    VersePresenter versePresenter;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -73,6 +81,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
 
         toolbar.setPresenter(toolbarPresenter);
         chapters.setPresenter(chapterPresenter);
+        verses.setPresenter(versePresenter);
     }
 
     @Override
@@ -88,6 +97,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
         presenter.takeView(this);
         toolbar.onStart();
         chapters.onStart();
+        verses.onStart();
     }
 
     @Override
@@ -95,6 +105,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
         presenter.dropView();
         toolbar.onStop();
         chapters.onStop();
+        verses.onStop();
         super.onStop();
     }
 
