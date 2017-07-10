@@ -51,7 +51,10 @@ final class VersePage {
     View loadingSpinner;
 
     final View root;
+
     private final VerseProvider verseProvider;
+    @SuppressWarnings("WeakerAccess")
+    final VerseListAdapter adapter;
 
     @SuppressWarnings("WeakerAccess")
     @Nullable
@@ -65,6 +68,8 @@ final class VersePage {
 
         final Context context = root.getContext();
         verses.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        adapter = new VerseListAdapter(context);
+        verses.setAdapter(adapter);
     }
 
     void bind(int book, int chapter) {
@@ -75,8 +80,9 @@ final class VersePage {
                     @Override
                     public void onSuccess(List<Verse> verses) {
                         loadVerses = null;
-
-                        // TODO
+                        loadingSpinner.setVisibility(View.GONE);
+                        adapter.setVerses(verses);
+                        VersePage.this.verses.scrollToPosition(0);
                     }
 
                     @Override
