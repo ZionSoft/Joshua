@@ -18,8 +18,13 @@
 
 package net.zionsoft.joshua.reading.verses
 
+import io.reactivex.Single
 import net.zionsoft.joshua.model.BibleReadingModel
+import net.zionsoft.joshua.model.domain.Verse
 import net.zionsoft.joshua.reading.BaseReadingPresenter
 
 class VersePresenter(bibleReadingModel: BibleReadingModel) : BaseReadingPresenter<VerseView>(bibleReadingModel) {
+    fun loadVerses(book: Int, chapter: Int): Single<List<Verse>> {
+        return bibleReadingModel.loadVerses(book, chapter)
+    }
 }

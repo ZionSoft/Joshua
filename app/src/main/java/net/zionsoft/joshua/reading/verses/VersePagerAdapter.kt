@@ -23,27 +23,32 @@ import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import net.zionsoft.joshua.R
 import net.zionsoft.joshua.model.domain.Bible
 
-class VersePagerAdapter(private val context: Context) : PagerAdapter() {
+internal class VersePagerAdapter(context: Context, private val verseProvider: VersePage.VerseProvider) : PagerAdapter() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private val pages: ArrayList<VersePage> = ArrayList()
 
     override fun getCount(): Int {
         return Bible.TOTAL_CHAPTER_COUNT
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val rootView = inflater.inflate(R.layout.item_verse_pager, container, false)
-        container.addView(rootView)
-        return rootView
+        val page = VersePage(inflater, container, verseProvider)
+        page.bind(positionToBookIndex(position), positionToChapterIndex(position))
+        pages.add(page)
+        container.addView(page.root)
+        return page
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
-        container.removeView(obj as View)
+        val page = obj as VersePage
+        page.unbind()
+        container.removeView(page.root)
+        pages.remove(page)
     }
 
     override fun isViewFromObject(view: View?, obj: Any?): Boolean {
-        return view == obj
+        return view == (obj as VersePage).root
     }
 }

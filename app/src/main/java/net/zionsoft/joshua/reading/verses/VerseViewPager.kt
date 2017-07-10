@@ -21,10 +21,12 @@ package net.zionsoft.joshua.reading.verses
 import android.content.Context
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
+import io.reactivex.Single
 import net.zionsoft.joshua.model.domain.TranslationInfo
+import net.zionsoft.joshua.model.domain.Verse
 import net.zionsoft.joshua.model.domain.VerseIndex
 
-class VerseViewPager : ViewPager, VerseView {
+class VerseViewPager : ViewPager, VerseView, VersePage.VerseProvider {
     private var presenter: VersePresenter? = null
     private var pagerAdapter: VersePagerAdapter? = null
 
@@ -53,7 +55,7 @@ class VerseViewPager : ViewPager, VerseView {
     }
 
     private fun init(context: Context) {
-        pagerAdapter = VersePagerAdapter(context)
+        pagerAdapter = VersePagerAdapter(context, this)
         adapter = pagerAdapter
 
         addOnPageChangeListener(onPageChangeListener)
@@ -79,6 +81,10 @@ class VerseViewPager : ViewPager, VerseView {
 
     override fun onCurrentTranslationInfoLoadFailed() {
         TODO("not implemented")
+    }
+
+    override fun loadVerses(book: Int, chapter: Int): Single<List<Verse>> {
+        return presenter?.loadVerses(book, chapter) ?: Single.error(IllegalStateException(""))
     }
 
     fun onStart() {
