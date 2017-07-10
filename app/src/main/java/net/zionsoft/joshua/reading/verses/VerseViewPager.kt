@@ -26,11 +26,37 @@ import net.zionsoft.joshua.model.domain.VerseIndex
 
 class VerseViewPager : ViewPager, VerseView {
     private var presenter: VersePresenter? = null
+    private var pagerAdapter: VersePagerAdapter? = null
+
+    private var currentBook: Int = 0
+    private var currentChapter: Int = 0
+    private val onPageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.SimpleOnPageChangeListener() {
+        override fun onPageSelected(position: Int) {
+            val book = positionToBookIndex(position)
+            val chapter = positionToChapterIndex(position)
+            if (currentBook == book && currentChapter == chapter) {
+                return
+            }
+
+            currentBook = book
+            currentChapter = chapter
+            presenter?.updateReadingProgress(book, chapter)
+        }
+    }
 
     constructor(context: Context) : super(context) {
+        init(context)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init(context)
+    }
+
+    private fun init(context: Context) {
+        pagerAdapter = VersePagerAdapter(context)
+        adapter = pagerAdapter
+
+        addOnPageChangeListener(onPageChangeListener)
     }
 
     fun setPresenter(presenter: VersePresenter) {
@@ -38,7 +64,13 @@ class VerseViewPager : ViewPager, VerseView {
     }
 
     override fun onReadingProgressUpdated(readingProgress: VerseIndex) {
-        // TODO
+        if (currentBook == readingProgress.book && currentChapter == readingProgress.chapter) {
+            return
+        }
+
+        currentBook = readingProgress.book
+        currentChapter = readingProgress.chapter
+        setCurrentItem(indexToPosition(currentBook, currentChapter), true)
     }
 
     override fun onCurrentTranslationInfoLoaded(currentTranslation: TranslationInfo) {
@@ -51,6 +83,9 @@ class VerseViewPager : ViewPager, VerseView {
 
     fun onStart() {
         presenter?.takeView(this)
+
+        currentBook = presenter?.getCurrentBook() ?: 0
+        currentChapter = presenter?.getCurrentChapter() ?: 0
         presenter?.loadCurrentTranslation()
     }
 
