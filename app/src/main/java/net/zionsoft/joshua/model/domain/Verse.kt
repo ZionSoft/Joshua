@@ -18,4 +18,8 @@
 
 package net.zionsoft.joshua.model.domain
 
-data class Verse(val index: VerseIndex, val text: String)
+data class Verse(val index: VerseIndex, val text: Text) {
+    data class Text(val text: String, val words: List<Word>) {
+        data class Word(val position: Int, val length: Int, val sn: String)
+    }
+}

@@ -62,6 +62,6 @@ final class VerseViewHolder extends RecyclerView.ViewHolder {
             index.setText(STRING_BUILDER.toString());
         }
 
-        text.setText(verse.getText());
+        text.setText(verse.getText().getText());
     }
 }
