@@ -27,7 +27,12 @@ import net.zionsoft.joshua.model.domain.Verse
 import net.zionsoft.joshua.model.domain.VerseIndex
 
 class VerseViewPager : ViewPager, VerseView, VersePage.VerseProvider {
+    interface VerseDetailPresenter {
+        fun showVerse(verse: Verse)
+    }
+
     private var presenter: VersePresenter? = null
+    private var verseDetailPresenter: VerseDetailPresenter? = null
     private var pagerAdapter: VersePagerAdapter? = null
 
     private var currentBook: Int = 0
@@ -63,6 +68,11 @@ class VerseViewPager : ViewPager, VerseView, VersePage.VerseProvider {
 
     fun setPresenter(presenter: VersePresenter) {
         this.presenter = presenter
+    }
+
+    fun setVerseDetailPresenter(verseDetailPresenter: VerseDetailPresenter) {
+        this.verseDetailPresenter = verseDetailPresenter;
+        pagerAdapter?.setVerseDetailPresenter(verseDetailPresenter)
     }
 
     override fun onReadingProgressUpdated(readingProgress: VerseIndex) {

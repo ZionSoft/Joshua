@@ -27,6 +27,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 
 import net.zionsoft.joshua.R;
+import net.zionsoft.joshua.model.domain.Verse;
 import net.zionsoft.joshua.reading.chapters.ChapterListView;
 import net.zionsoft.joshua.reading.chapters.ChapterPresenter;
 import net.zionsoft.joshua.reading.toolbar.ReadingToolbar;
@@ -35,11 +36,14 @@ import net.zionsoft.joshua.reading.verses.VersePresenter;
 import net.zionsoft.joshua.reading.verses.VerseViewPager;
 import net.zionsoft.joshua.utils.BaseActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public final class ReadingActivity extends BaseActivity implements ReadingView {
+public final class ReadingActivity extends BaseActivity implements ReadingView,
+        VerseViewPager.VerseDetailPresenter {
     public static Intent newStartIntent(Context context) {
         return new Intent(context, ReadingActivity.class);
     }
@@ -82,6 +86,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
         toolbar.setPresenter(toolbarPresenter);
         chapters.setPresenter(chapterPresenter);
         verses.setPresenter(versePresenter);
+        verses.setVerseDetailPresenter(this);
     }
 
     @Override
@@ -113,5 +118,10 @@ public final class ReadingActivity extends BaseActivity implements ReadingView {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void showVerse(@NotNull Verse verse) {
+        // TODO
     }
 }

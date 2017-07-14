@@ -28,13 +28,14 @@ import net.zionsoft.joshua.model.domain.Bible
 internal class VersePagerAdapter(context: Context, private val verseProvider: VersePage.VerseProvider) : PagerAdapter() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val pages: ArrayList<VersePage> = ArrayList()
+    private var verseDetailPresenter: VerseViewPager.VerseDetailPresenter? = null
 
     override fun getCount(): Int {
         return Bible.TOTAL_CHAPTER_COUNT
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val page = VersePage(inflater, container, verseProvider)
+        val page = VersePage(inflater, container, verseProvider, verseDetailPresenter)
         page.bind(positionToBookIndex(position), positionToChapterIndex(position))
         pages.add(page)
         container.addView(page.root)
@@ -50,5 +51,9 @@ internal class VersePagerAdapter(context: Context, private val verseProvider: Ve
 
     override fun isViewFromObject(view: View?, obj: Any?): Boolean {
         return view == (obj as VersePage).root
+    }
+
+    fun setVerseDetailPresenter(verseDetailPresenter: VerseViewPager.VerseDetailPresenter) {
+        this.verseDetailPresenter = verseDetailPresenter
     }
 }

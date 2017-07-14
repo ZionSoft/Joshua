@@ -18,8 +18,10 @@
 
 package net.zionsoft.joshua.reading.verses;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -29,7 +31,7 @@ import net.zionsoft.joshua.model.domain.Verse;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-final class VerseViewHolder extends RecyclerView.ViewHolder {
+final class VerseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private static final StringBuilder STRING_BUILDER = new StringBuilder();
 
     @BindView(R.id.index)
@@ -38,12 +40,20 @@ final class VerseViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.text)
     TextView text;
 
-    VerseViewHolder(LayoutInflater inflater, ViewGroup parent) {
+    private final VerseViewPager.VerseDetailPresenter verseDetailPresenter;
+    @Nullable
+    private Verse verse;
+
+    VerseViewHolder(LayoutInflater inflater, ViewGroup parent, VerseViewPager.VerseDetailPresenter verseDetailPresenter) {
         super(inflater.inflate(R.layout.item_verse, parent, false));
         ButterKnife.bind(this, itemView);
+        this.verseDetailPresenter = verseDetailPresenter;
+        itemView.setOnClickListener(this);
     }
 
     void bind(Verse verse, int totalVerses) {
+        this.verse = verse;
+
         synchronized (STRING_BUILDER) {
             STRING_BUILDER.setLength(0);
             final int verseIndex = verse.getIndex().getVerse();
@@ -63,5 +73,12 @@ final class VerseViewHolder extends RecyclerView.ViewHolder {
         }
 
         text.setText(verse.getText().getText());
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (verse != null) {
+            verseDetailPresenter.showVerse(verse);
+        }
     }
 }

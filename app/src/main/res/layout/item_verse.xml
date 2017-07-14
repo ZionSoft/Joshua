@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/padding_small"
-    android:layout_marginLeft="@dimen/padding"
-    android:layout_marginRight="@dimen/padding"
-    android:layout_marginTop="@dimen/padding_small"
     android:background="?android:attr/selectableItemBackground"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/padding_small"
+    android:paddingLeft="@dimen/padding"
+    android:paddingRight="@dimen/padding"
+    android:paddingTop="@dimen/padding_small">
 
     <TextView
         android:id="@+id/index"

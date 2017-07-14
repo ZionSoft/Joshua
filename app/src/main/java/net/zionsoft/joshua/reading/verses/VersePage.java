@@ -60,7 +60,8 @@ final class VersePage {
     @Nullable
     Disposable loadVerses;
 
-    VersePage(LayoutInflater inflater, ViewGroup parent, VerseProvider verseProvider) {
+    VersePage(LayoutInflater inflater, ViewGroup parent, VerseProvider verseProvider,
+              VerseViewPager.VerseDetailPresenter verseDetailPresenter) {
         this.verseProvider = verseProvider;
 
         root = inflater.inflate(R.layout.item_verse_pager, parent, false);
@@ -68,7 +69,7 @@ final class VersePage {
 
         final Context context = root.getContext();
         verses.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        adapter = new VerseListAdapter(context);
+        adapter = new VerseListAdapter(context, verseDetailPresenter);
         verses.setAdapter(adapter);
     }
 

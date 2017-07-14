@@ -24,13 +24,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import net.zionsoft.joshua.model.domain.Verse
 
-internal class VerseListAdapter(context: Context) : RecyclerView.Adapter<VerseViewHolder>() {
+internal class VerseListAdapter(context: Context, private val verseDetailPresenter: VerseViewPager.VerseDetailPresenter)
+    : RecyclerView.Adapter<VerseViewHolder>() {
     private val inflater = LayoutInflater.from(context)
 
     private var verses: List<Verse>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): VerseViewHolder {
-        return VerseViewHolder(inflater, parent)
+        return VerseViewHolder(inflater, parent, verseDetailPresenter)
     }
 
     override fun onBindViewHolder(holder: VerseViewHolder?, position: Int) {
