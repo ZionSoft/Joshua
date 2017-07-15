@@ -19,6 +19,7 @@
 package net.zionsoft.joshua.model;
 
 import net.zionsoft.joshua.model.domain.Bible;
+import net.zionsoft.joshua.model.domain.StrongWord;
 import net.zionsoft.joshua.model.domain.TranslationInfo;
 import net.zionsoft.joshua.model.domain.Verse;
 import net.zionsoft.joshua.model.domain.VerseIndex;
@@ -152,11 +153,11 @@ public final class BibleReadingModel {
                 }
                 final List<Verse> verses = new ArrayList<>(31);
                 final List<Verse.Text.Word> words = new ArrayList<>();
-                words.add(new Verse.Text.Word(0, 2, "H07225"));
-                words.add(new Verse.Text.Word(3, 1, "H0430"));
-                words.add(new Verse.Text.Word(4, 2, "H01254"));
-                words.add(new Verse.Text.Word(6, 1, "H08064"));
-                words.add(new Verse.Text.Word(7, 1, "H0776"));
+                words.add(new Verse.Text.Word(0, 2, new StrongWord("H07225", "开始、首要", "")));
+                words.add(new Verse.Text.Word(3, 1, new StrongWord("H0430", "上帝、神、神明", "")));
+                words.add(new Verse.Text.Word(4, 2, new StrongWord("H01254", "创造", "")));
+                words.add(new Verse.Text.Word(6, 1, new StrongWord("H08064", "天", "")));
+                words.add(new Verse.Text.Word(7, 1, new StrongWord("H0776", "地、邦国、疆界", "")));
                 verses.add(new Verse(new VerseIndex(0, 0, 0), new Verse.Text("起初，神创造天地。", words)));
                 verses.add(new Verse(new VerseIndex(0, 0, 1), new Verse.Text("地是空虚混沌，渊面黑暗；神的灵运行在水面上。", Collections.<Verse.Text.Word>emptyList())));
                 verses.add(new Verse(new VerseIndex(0, 0, 2), new Verse.Text("神说：「要有光」，就有了光。", Collections.<Verse.Text.Word>emptyList())));

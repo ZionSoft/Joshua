@@ -175,7 +175,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
             stringBuilder.append(currentTranslation.getBooks().get(verseIndex.getBook()).getName())
                     .append(' ').append(Integer.toString(verseIndex.getChapter() + 1))
                     .append(':').append(Integer.toString(verseIndex.getVerse() + 1))
-                    .append('\n');
+                    .append(' ');
         }
 
         final Verse.Text text = verse.getText();
@@ -190,7 +190,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
                 final Verse.Text.Word word = words.get(i);
                 final int start = word.getPosition();
                 final int end = word.getPosition() + word.getLength();
-                stringBuilder.append('\n').append(verseText.substring(start, end));
+                stringBuilder.append('\n').append(verseText.substring(start, end))
+                        .append(": ").append(word.getStrongWord().getBrief());
+
             }
         }
 
