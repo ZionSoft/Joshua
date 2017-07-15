@@ -21,13 +21,17 @@ package net.zionsoft.joshua.reading;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,10 +47,6 @@ import net.zionsoft.joshua.reading.verses.VersePresenter;
 import net.zionsoft.joshua.reading.verses.VerseViewPager;
 import net.zionsoft.joshua.utils.BaseActivity;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -56,6 +56,10 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     public static Intent newStartIntent(Context context) {
         return new Intent(context, ReadingActivity.class);
     }
+
+    private static final SpannableStringBuilder BUILDER = new SpannableStringBuilder();
+    private static final RelativeSizeSpan RELATIVE_SIZE_SPAN = new RelativeSizeSpan(1.25F);
+    private static final StyleSpan BOLD_SPAN = new StyleSpan(Typeface.BOLD);
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -74,6 +78,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
 
     @BindView(R.id.verse)
     TextView verse;
+
+    @BindView(R.id.word)
+    TextView word;
 
     @Inject
     ReadingPresenter presenter;
@@ -168,35 +175,39 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     }
 
     @Override
-    public void showVerse(@NotNull Verse verse) {
-        final SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
-        if (currentTranslation != null) {
-            final VerseIndex verseIndex = verse.getIndex();
-            stringBuilder.append(currentTranslation.getBooks().get(verseIndex.getBook()).getName())
-                    .append(' ').append(Integer.toString(verseIndex.getChapter() + 1))
-                    .append(':').append(Integer.toString(verseIndex.getVerse() + 1))
-                    .append(' ');
-        }
+    public void showVerse(@NonNull Verse verse, int wordIndex) {
+        synchronized (BUILDER) {
+            BUILDER.clear();
+            BUILDER.clearSpans();
 
-        final Verse.Text text = verse.getText();
-        final String verseText = text.getText();
-        stringBuilder.append(verseText);
-
-        final List<Verse.Text.Word> words = text.getWords();
-        final int wordCount = words.size();
-        if (wordCount > 0) {
-            stringBuilder.append('\n');
-            for (int i = 0; i < wordCount; ++i) {
-                final Verse.Text.Word word = words.get(i);
-                final int start = word.getPosition();
-                final int end = word.getPosition() + word.getLength();
-                stringBuilder.append('\n').append(verseText.substring(start, end))
-                        .append(": ").append(word.getStrongWord().getBrief());
-
+            if (currentTranslation != null) {
+                final VerseIndex verseIndex = verse.getIndex();
+                BUILDER.append(currentTranslation.getBooks().get(verseIndex.getBook()).getName())
+                        .append(' ').append(Integer.toString(verseIndex.getChapter() + 1))
+                        .append(':').append(Integer.toString(verseIndex.getVerse() + 1))
+                        .append(' ');
             }
-        }
+            final int startOfVerseText = BUILDER.length();
 
-        this.verse.setText(stringBuilder.subSequence(0, stringBuilder.length()));
+            final Verse.Text text = verse.getText();
+            final String verseText = text.getText();
+            BUILDER.append(verseText);
+
+            final Verse.Text.Word word = text.getWords().get(wordIndex);
+            final int wordStart = word.getPosition();
+            final int wordEnd = wordStart + word.getLength();
+            final int highlightStart = startOfVerseText + wordStart;
+            final int highlightEnd = startOfVerseText + wordEnd;
+            BUILDER.setSpan(RELATIVE_SIZE_SPAN, highlightStart, highlightEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            BUILDER.setSpan(BOLD_SPAN, highlightStart, highlightEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+            this.verse.setText(BUILDER.subSequence(0, BUILDER.length()));
+
+            BUILDER.clear();
+            BUILDER.clearSpans();
+            BUILDER.append(word.getStrongWord().getDetail());
+            this.word.setText(BUILDER.subSequence(0, BUILDER.length()));
+        }
 
         verseDetailBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }

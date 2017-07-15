@@ -153,11 +153,105 @@ public final class BibleReadingModel {
                 }
                 final List<Verse> verses = new ArrayList<>(31);
                 final List<Verse.Text.Word> words = new ArrayList<>();
-                words.add(new Verse.Text.Word(0, 2, new StrongWord("H07225", "开始、首要", "")));
-                words.add(new Verse.Text.Word(3, 1, new StrongWord("H0430", "上帝、神、神明", "")));
-                words.add(new Verse.Text.Word(4, 2, new StrongWord("H01254", "创造", "")));
-                words.add(new Verse.Text.Word(6, 1, new StrongWord("H08064", "天", "")));
-                words.add(new Verse.Text.Word(7, 1, new StrongWord("H0776", "地、邦国、疆界", "")));
+                words.add(new Verse.Text.Word(0, 2, new StrongWord("H07225", "开始、首要",
+                        "07225 re'shiyth {ray-sheeth'} \n" +
+                                "\n" +
+                                "与07218同字根; TWOT -2097e; 阴性名词\n" +
+                                "\n" +
+                                "AV - beginning 18, firstfruits 11, first 9, chief 8, misc 5; 51\n" +
+                                "\n" +
+                                "1)首先, 起头, 最好的, 首领\n" +
+                                "   1a)起初\n" +
+                                "   1b)首先\n" +
+                                "   1c)首领\n" +
+                                "   1d)上好的部份")));
+                words.add(new Verse.Text.Word(3, 1, new StrongWord("H00430", "上帝、神、神明",
+                        "0430 'elohiym {e-lo:-hi:m'}\n" +
+                                "\n" +
+                                "0433 的复数形; TWOT - 93c; 复数阳性名词\n" +
+                                "\n" +
+                                "钦定本 - God 2346, god 244, judge 5, GOD 1, goddess 2, great 2, mighty 2,\n" +
+                                "     angels 1, exceeding 1, God-ward + 04136 1, godly 1; 2606\n" +
+                                "\n" +
+                                "1) (复数)\n" +
+                                "   1a) 统治者, 审判官\n" +
+                                "   1b) 有神性的\n" +
+                                "   1c) 天使\n" +
+                                "   1d) 众神\n" +
+                                "2) (加强语气复数 - 单数意思)\n" +
+                                "   2a) 男神, 女神\n" +
+                                "   2b) 像神的\n" +
+                                "   2c) 神的工作, 或是特别属于神的东西\n" +
+                                "   2d) 独一的 (真) 神\n" +
+                                "   2e) 大写的神 (God)")));
+                words.add(new Verse.Text.Word(4, 2, new StrongWord("H01254", "创造",
+                        "01254 bara' {ba:-ra:'}\n" +
+                                "\n" +
+                                "字根型; TWOT -278; 动词\n" +
+                                "\n" +
+                                "钦定本 - create 42, creator 3, choose 2, make 2, cut down 2, dispatch 1,\n" +
+                                "     done 1, make fat 1; 54\n" +
+                                "\n" +
+                                "1) 创造, 型塑\n" +
+                                "   1a) (Qal) 型塑, 制作, 创造 (都指属天的作为)\n" +
+                                "       1a1) 天与地\n" +
+                                "       1a2) 个人\n" +
+                                "       1a3) 新的情况与环境\n" +
+                                "       1a4) 更新变化\n" +
+                                "   1b) (Niphal) 被造\n" +
+                                "       1b1) 天与地\n" +
+                                "       1b2) 论及出生\n" +
+                                "       1b3) 新的, 惊人的 (诸如奇迹 #出 34:10|, 新事 #赛 48:6|)\n" +
+                                "   1c) (Piel)\n" +
+                                "       1c1) 砍伐\n" +
+                                "       1c2) 刻出 (#结 21:19|)\n" +
+                                "2) 肥胖\n" +
+                                "   2a) (Hiphil) 使自己肥胖 (#撒上 2:29|)")));
+                words.add(new Verse.Text.Word(6, 1, new StrongWord("H08064", "天",
+                        "08064 shamayim {shaw-mah'-yim}  单数字根shameh {shaw-meh'}的双数型\n" +
+                                "   \n" +
+                                "字根已不使用, 意为崇高; TWOT - 2407a; 阳性名词\n" +
+                                "\n" +
+                                "AV - heaven 398, air 21, astrologers + 01895 1; 420\n" +
+                                "\n" +
+                                "1)天, 诸天, 天空\n" +
+                                "   1a)可见的天, 天空\n" +
+                                "      1a1)星宿的居所\n" +
+                                "      1a2)可见的宇宙, 天空, 太空, 等等\n" +
+                                "   1b)天堂(上帝的居所)")));
+                words.add(new Verse.Text.Word(7, 1, new StrongWord("H00776", "地、邦国、疆界",
+                        "0776 'erets {e'-rets}\n" +
+                                "\n" +
+                                "字根已不使用, 可能意为\"坚定\"; TWOT - 167; 阴性名词 \n" +
+                                "\n" +
+                                "钦定本 - land 1543, earth 712, country 140, ground 98, world 4, way 3,\n" +
+                                "     common 1, field 1, nations 1, wilderness + 04057 1; 2504\n" +
+                                "\n" +
+                                "1) 地, 土地\n" +
+                                "   1a) 土地\n" +
+                                "       1a1) 全地 (相对于部份地区)\n" +
+                                "       1a2) 地 (相对于天)\n" +
+                                "       1a3) 地 (住在其上的人)\n" +
+                                "   1b) 地\n" +
+                                "       1b1) 国家, 疆界\n" +
+                                "       1b2) 辖区, 区域\n" +
+                                "       1b3) 支派疆界\n" +
+                                "       1b4) 一块地\n" +
+                                "       1b5) 特别指迦南地或以色列地\n" +
+                                "       1b6) 地上的居民\n" +
+                                "       1b7) 阴间, 去而不返之地, (下面的) 世界\n" +
+                                "   1c) 地, 地面\n" +
+                                "       1c1) 地面\n" +
+                                "       1c2) 土壤\n" +
+                                "   1d) (片语中)\n" +
+                                "       1d1) 地上的国民\n" +
+                                "       1d2) 邦国的空间 (度量距离)\n" +
+                                "       1d3) 邦国之境界\n" +
+                                "       1d4) 活人之地\n" +
+                                "       1d5) 地极\n" +
+                                "   1e) (几乎都用于晚期)\n" +
+                                "       1e1) 诸地, 列国\n" +
+                                "            1e1a) 多相对于迦南")));
                 verses.add(new Verse(new VerseIndex(0, 0, 0), new Verse.Text("起初，神创造天地。", words)));
                 verses.add(new Verse(new VerseIndex(0, 0, 1), new Verse.Text("地是空虚混沌，渊面黑暗；神的灵运行在水面上。", Collections.<Verse.Text.Word>emptyList())));
                 verses.add(new Verse(new VerseIndex(0, 0, 2), new Verse.Text("神说：「要有光」，就有了光。", Collections.<Verse.Text.Word>emptyList())));
