@@ -73,6 +73,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     @BindView(R.id.verses)
     VerseViewPager verses;
 
+    @BindView(R.id.bottom_sheet)
+    View bottomSheet;
+
     @BindView(R.id.verse_detail)
     View verseDetail;
 
@@ -113,9 +116,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
         verses.setPresenter(versePresenter);
         verses.setVerseDetailPresenter(this);
 
-        verseDetail.setOnClickListener(this);
-        verseDetailBehavior = BottomSheetBehavior.from(verseDetail);
+        verseDetailBehavior = BottomSheetBehavior.from(bottomSheet);
         verseDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        verseDetail.setOnClickListener(this);
     }
 
     @Override

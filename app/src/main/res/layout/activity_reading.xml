@@ -28,10 +28,10 @@
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
-            android:id="@+id/verse_detail"
+            android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
+            android:background="#F0000000"
             android:elevation="@dimen/design_appbar_elevation"
             app:behavior_hideable="true"
             app:behavior_skipCollapsed="true"
@@ -42,6 +42,7 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/verse_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -49,13 +50,13 @@
 
                     <TextView
                         android:id="@+id/verse"
-                        style="@style/Text.Title"
+                        style="@style/Text.Title.Light"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         android:id="@+id/word"
-                        style="@style/Text.Body1"
+                        style="@style/Text.Subheading.Light"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/padding_small" />
