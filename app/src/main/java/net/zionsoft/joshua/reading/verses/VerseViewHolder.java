@@ -18,25 +18,21 @@
 
 package net.zionsoft.joshua.reading.verses;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.zionsoft.joshua.R;
 import net.zionsoft.joshua.model.domain.Verse;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-final class VerseViewHolder extends RecyclerView.ViewHolder {
-    private static final SpannableStringBuilder BUILDER = new SpannableStringBuilder();
+final class VerseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private static final StringBuilder BUILDER = new StringBuilder();
 
     @BindView(R.id.index)
     TextView index;
@@ -45,19 +41,21 @@ final class VerseViewHolder extends RecyclerView.ViewHolder {
     TextView text;
 
     private final VerseViewPager.VerseDetailPresenter verseDetailPresenter;
-    private final ArrayList<VerseClickableSpan> clickableSpans = new ArrayList<>();
+    @Nullable
+    private Verse verse;
 
     VerseViewHolder(LayoutInflater inflater, ViewGroup parent, VerseViewPager.VerseDetailPresenter verseDetailPresenter) {
         super(inflater.inflate(R.layout.item_verse, parent, false));
         ButterKnife.bind(this, itemView);
+        itemView.setOnClickListener(this);
         this.verseDetailPresenter = verseDetailPresenter;
-        text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     void bind(Verse verse, int totalVerses) {
+        this.verse = verse;
+
         synchronized (BUILDER) {
-            BUILDER.clear();
-            BUILDER.clearSpans();
+            BUILDER.setLength(0);
             final int verseIndex = verse.getIndex().getVerse();
             if (totalVerses >= 100) {
                 if (verseIndex < 10) {
@@ -71,30 +69,16 @@ final class VerseViewHolder extends RecyclerView.ViewHolder {
                 }
             }
             BUILDER.append(Integer.toString(verseIndex + 1));
-            index.setText(BUILDER.subSequence(0, BUILDER.length()));
+            index.setText(BUILDER.toString());
+        }
 
-            BUILDER.clear();
-            BUILDER.clearSpans();
-            final Verse.Text verseText = verse.getText();
-            BUILDER.append(verseText.getText());
-            final List<Verse.Text.Word> verseWords = verseText.getWords();
-            final int wordCount = verseWords.size();
-            for (int i = 0; i < wordCount; ++i) {
-                final VerseClickableSpan clickableSpan;
-                if (i >= clickableSpans.size()) {
-                    clickableSpan = new VerseClickableSpan(verseDetailPresenter, text.getCurrentTextColor());
-                    clickableSpans.add(clickableSpan);
-                } else {
-                    clickableSpan = clickableSpans.get(i);
-                }
-                clickableSpan.setData(verse, i);
+        text.setText(verse.getText().getText());
+    }
 
-                final Verse.Text.Word word = verseWords.get(i);
-                final int start = word.getPosition();
-                final int end = start + word.getLength();
-                BUILDER.setSpan(clickableSpan, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            }
-            text.setText(BUILDER.subSequence(0, BUILDER.length()));
+    @Override
+    public void onClick(View v) {
+        if (verse != null) {
+            verseDetailPresenter.showVerse(verse);
         }
     }
 }

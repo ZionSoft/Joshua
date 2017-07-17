@@ -21,21 +21,19 @@ package net.zionsoft.joshua.reading;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.zionsoft.joshua.R;
+import net.zionsoft.joshua.model.domain.StrongWord;
 import net.zionsoft.joshua.model.domain.TranslationInfo;
 import net.zionsoft.joshua.model.domain.Verse;
 import net.zionsoft.joshua.model.domain.VerseIndex;
@@ -47,6 +45,8 @@ import net.zionsoft.joshua.reading.verses.VersePresenter;
 import net.zionsoft.joshua.reading.verses.VerseViewPager;
 import net.zionsoft.joshua.utils.BaseActivity;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -57,9 +57,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
         return new Intent(context, ReadingActivity.class);
     }
 
-    private static final SpannableStringBuilder BUILDER = new SpannableStringBuilder();
-    private static final RelativeSizeSpan RELATIVE_SIZE_SPAN = new RelativeSizeSpan(1.25F);
-    private static final StyleSpan BOLD_SPAN = new StyleSpan(Typeface.BOLD);
+    private static final StringBuilder BUILDER = new StringBuilder();
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -74,16 +72,10 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     VerseViewPager verses;
 
     @BindView(R.id.bottom_sheet)
-    View bottomSheet;
-
-    @BindView(R.id.verse_detail)
-    View verseDetail;
+    LinearLayout bottomSheet;
 
     @BindView(R.id.verse)
     TextView verse;
-
-    @BindView(R.id.word)
-    TextView word;
 
     @Inject
     ReadingPresenter presenter;
@@ -118,7 +110,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
 
         verseDetailBehavior = BottomSheetBehavior.from(bottomSheet);
         verseDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-        verseDetail.setOnClickListener(this);
+        bottomSheet.setOnClickListener(this);
     }
 
     @Override
@@ -178,10 +170,11 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     }
 
     @Override
-    public void showVerse(@NonNull Verse verse, int wordIndex) {
+    public void showVerse(@NonNull Verse verse) {
+        bottomSheet.removeViews(1, bottomSheet.getChildCount() - 1);
+
         synchronized (BUILDER) {
-            BUILDER.clear();
-            BUILDER.clearSpans();
+            BUILDER.setLength(0);
 
             if (currentTranslation != null) {
                 final VerseIndex verseIndex = verse.getIndex();
@@ -190,26 +183,27 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
                         .append(':').append(Integer.toString(verseIndex.getVerse() + 1))
                         .append(' ');
             }
-            final int startOfVerseText = BUILDER.length();
 
             final Verse.Text text = verse.getText();
             final String verseText = text.getText();
             BUILDER.append(verseText);
+            this.verse.setText(BUILDER.toString());
 
-            final Verse.Text.Word word = text.getWords().get(wordIndex);
-            final int wordStart = word.getPosition();
-            final int wordEnd = wordStart + word.getLength();
-            final int highlightStart = startOfVerseText + wordStart;
-            final int highlightEnd = startOfVerseText + wordEnd;
-            BUILDER.setSpan(RELATIVE_SIZE_SPAN, highlightStart, highlightEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            BUILDER.setSpan(BOLD_SPAN, highlightStart, highlightEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
-            this.verse.setText(BUILDER.subSequence(0, BUILDER.length()));
-
-            BUILDER.clear();
-            BUILDER.clearSpans();
-            BUILDER.append(word.getStrongWord().getDetail());
-            this.word.setText(BUILDER.subSequence(0, BUILDER.length()));
+            final List<Verse.Text.Word> words = text.getWords();
+            final int wordCount = words.size();
+            final LayoutInflater inflater = LayoutInflater.from(this);
+            for (int i = 0; i < wordCount; ++i) {
+                final Verse.Text.Word word = words.get(i);
+                final TextView textView = (TextView) inflater.inflate(R.layout.item_word, bottomSheet, false);
+                BUILDER.setLength(0);
+                final int start = word.getPosition();
+                final StrongWord strongWord = word.getStrongWord();
+                BUILDER.append(verseText.substring(start, start + word.getLength()))
+                        .append('(').append(strongWord.getSn()).append("): ")
+                        .append(strongWord.getBrief());
+                textView.setText(BUILDER.toString());
+                bottomSheet.addView(textView);
+            }
         }
 
         verseDetailBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -217,7 +211,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
 
     @Override
     public void onClick(View v) {
-        if (v == verseDetail) {
+        if (v == bottomSheet) {
             verseDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }

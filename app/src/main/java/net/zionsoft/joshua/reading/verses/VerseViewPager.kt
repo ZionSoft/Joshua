@@ -28,7 +28,7 @@ import net.zionsoft.joshua.model.domain.VerseIndex
 
 class VerseViewPager : ViewPager, VerseView, VersePage.VerseProvider {
     interface VerseDetailPresenter {
-        fun showVerse(verse: Verse, wordIndex: Int)
+        fun showVerse(verse: Verse)
     }
 
     private var presenter: VersePresenter? = null
