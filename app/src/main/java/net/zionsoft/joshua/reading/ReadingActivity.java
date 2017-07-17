@@ -171,8 +171,6 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
 
     @Override
     public void showVerse(@NonNull Verse verse) {
-        bottomSheet.removeViews(1, bottomSheet.getChildCount() - 1);
-
         synchronized (BUILDER) {
             BUILDER.setLength(0);
 
@@ -189,20 +187,24 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
             BUILDER.append(verseText);
             this.verse.setText(BUILDER.toString());
 
+            bottomSheet.removeViews(1, bottomSheet.getChildCount() - 1);
             final List<Verse.Text.Word> words = text.getWords();
             final int wordCount = words.size();
             final LayoutInflater inflater = LayoutInflater.from(this);
             for (int i = 0; i < wordCount; ++i) {
                 final Verse.Text.Word word = words.get(i);
-                final TextView textView = (TextView) inflater.inflate(R.layout.item_word, bottomSheet, false);
+                final WordTextView wordTextView = (WordTextView) inflater.inflate(
+                        R.layout.item_word, bottomSheet, false);
+                wordTextView.setData(verse, i);
+
                 BUILDER.setLength(0);
                 final int start = word.getPosition();
                 final StrongWord strongWord = word.getStrongWord();
                 BUILDER.append(verseText.substring(start, start + word.getLength()))
                         .append('(').append(strongWord.getSn()).append("): ")
                         .append(strongWord.getBrief());
-                textView.setText(BUILDER.toString());
-                bottomSheet.addView(textView);
+                wordTextView.setText(BUILDER.toString());
+                bottomSheet.addView(wordTextView);
             }
         }
 

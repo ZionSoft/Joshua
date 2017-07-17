@@ -31,7 +31,7 @@
             android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:elevation="@dimen/design_appbar_elevation"
+            android:elevation="8dp"
             android:gravity="bottom"
             android:orientation="vertical"
             app:behavior_hideable="true"
@@ -40,10 +40,10 @@
 
             <TextView
                 android:id="@+id/verse"
-                style="@style/Text.Title.Light"
+                style="@style/Text.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#F0000000"
+                android:background="#EEEEEE"
                 android:paddingBottom="@dimen/padding_small"
                 android:paddingEnd="@dimen/padding"
                 android:paddingStart="@dimen/padding"
