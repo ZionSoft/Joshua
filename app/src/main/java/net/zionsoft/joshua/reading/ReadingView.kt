@@ -18,5 +18,7 @@
 
 package net.zionsoft.joshua.reading
 
-interface ReadingView : BaseReadingView {
+import net.zionsoft.joshua.mvp.MVPView
+
+interface ReadingView : MVPView {
 }

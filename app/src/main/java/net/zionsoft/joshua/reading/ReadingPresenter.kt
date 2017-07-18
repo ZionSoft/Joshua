@@ -18,7 +18,7 @@
 
 package net.zionsoft.joshua.reading
 
-import net.zionsoft.joshua.model.BibleReadingModel
+import net.zionsoft.joshua.mvp.MVPPresenter
 
-class ReadingPresenter(bibleReadingModel: BibleReadingModel) : BaseReadingPresenter<ReadingView>(bibleReadingModel) {
+class ReadingPresenter : MVPPresenter<ReadingView>() {
 }

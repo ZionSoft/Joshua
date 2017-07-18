@@ -29,8 +29,8 @@ import dagger.Provides;
 @Module
 public class ReadingModule {
     @Provides
-    ReadingPresenter provideReadingPresenter(BibleReadingModel bibleReadingModel) {
-        return new ReadingPresenter(bibleReadingModel);
+    ReadingPresenter provideReadingPresenter() {
+        return new ReadingPresenter();
     }
 
     @Provides
