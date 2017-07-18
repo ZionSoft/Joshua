@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <net.zionsoft.joshua.reading.verses.VerseViewPager
-            android:id="@+id/verses"
+            android:id="@+id/verse_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />

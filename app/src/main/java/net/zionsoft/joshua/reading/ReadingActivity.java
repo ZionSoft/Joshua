@@ -58,7 +58,7 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     @BindView(R.id.chapters)
     ChapterListView chapters;
 
-    @BindView(R.id.verses)
+    @BindView(R.id.verse_view_pager)
     VerseViewPager verses;
 
     @BindView(R.id.verse_detail)
