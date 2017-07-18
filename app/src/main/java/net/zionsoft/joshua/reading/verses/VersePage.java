@@ -64,7 +64,7 @@ final class VersePage {
               VerseViewPager.VerseDetailPresenter verseDetailPresenter) {
         this.verseProvider = verseProvider;
 
-        root = inflater.inflate(R.layout.item_verse_pager, parent, false);
+        root = inflater.inflate(R.layout.page_verse_list, parent, false);
         ButterKnife.bind(this, root);
 
         final Context context = root.getContext();

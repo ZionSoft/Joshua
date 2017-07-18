@@ -24,9 +24,10 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import net.zionsoft.joshua.R;
 import net.zionsoft.joshua.model.domain.Verse;
@@ -43,7 +44,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public final class ReadingActivity extends BaseActivity implements ReadingView,
-        VerseViewPager.VerseDetailPresenter {
+        VerseViewPager.VerseDetailPresenter, View.OnClickListener {
     public static Intent newStartIntent(Context context) {
         return new Intent(context, ReadingActivity.class);
     }
@@ -59,6 +60,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
 
     @BindView(R.id.verses)
     VerseViewPager verses;
+
+    @BindView(R.id.verse_detail)
+    View verseDetail;
 
     @BindView(R.id.verse_detail_view)
     VerseDetailView verseDetailView;
@@ -76,7 +80,6 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     VersePresenter versePresenter;
 
     private ActionBarDrawerToggle drawerToggle;
-    private BottomSheetBehavior verseDetailBehavior;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,8 +95,14 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
         verses.setPresenter(versePresenter);
         verses.setVerseDetailPresenter(this);
 
-        verseDetailBehavior = BottomSheetBehavior.from(verseDetailView);
-        verseDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        verseDetail.setOnClickListener(this);
+        verseDetail.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                verseDetail.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                verseDetail.setTranslationY(verseDetail.getHeight());
+            }
+        });
     }
 
     @Override
@@ -123,8 +132,8 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
 
     @Override
     public void onBackPressed() {
-        if (verseDetailBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-            verseDetailBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        if (verseDetail.getTranslationY() <= 0.0F) {
+            verseDetail.animate().translationY(verseDetail.getHeight());
         } else {
             super.onBackPressed();
         }
@@ -139,6 +148,13 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
     @Override
     public void showVerse(@NonNull Verse verse) {
         verseDetailView.setData(verse);
-        verseDetailBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        verseDetail.animate().translationY(0.0F);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == verseDetail) {
+            verseDetail.animate().translationY(verseDetail.getHeight());
+        }
     }
 }
