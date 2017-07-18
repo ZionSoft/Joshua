@@ -48,6 +48,19 @@ public final class BibleReadingModel {
         readingProgressSubject.onNext(currentReadingProgress);
     }
 
+    public Single<List<TranslationInfo>> loadTranslations() {
+        return Single.fromCallable(new Callable<List<TranslationInfo>>() {
+            @Override
+            public List<TranslationInfo> call() throws Exception {
+                final List<TranslationInfo> translations = new ArrayList<>();
+                translations.add(new TranslationInfo("和合本圣经", "和合本", Collections.<TranslationInfo.BookInfo>emptyList()));
+                translations.add(new TranslationInfo("Authorized King James", "KJV", Collections.<TranslationInfo.BookInfo>emptyList()));
+                translations.add(new TranslationInfo("New International Version", "NIV", Collections.<TranslationInfo.BookInfo>emptyList()));
+                return translations;
+            }
+        });
+    }
+
     public Single<TranslationInfo> loadCurrentTranslation() {
         return Single.fromCallable(new Callable<TranslationInfo>() {
             @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/AppWindowAnimationStyle</item>
 
@@ -7,6 +8,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="colorButtonNormal">@color/primary</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
     <style name="AppWindowAnimationStyle">
@@ -16,7 +18,15 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_left_to_right</item>
     </style>
 
-    <style name="Text"/>
+    <style name="AppCheckBoxStyle">
+        <item name="colorControlNormal">@color/dark_gray</item>
+        <item name="colorControlActivated">@color/primary</item>
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="colorAccent">@color/primary</item>
+        <item name="android:textColorSecondary">@color/dark_gray</item>
+    </style>
+
+    <style name="Text" />
 
     <style name="Text.Display4">
         <item name="android:fontFamily">@string/font_family_light</item>

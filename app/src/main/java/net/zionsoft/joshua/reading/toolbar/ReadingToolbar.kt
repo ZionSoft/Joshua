@@ -19,11 +19,14 @@
 package net.zionsoft.joshua.reading.toolbar
 
 import android.content.Context
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.widget.Spinner
 import net.zionsoft.joshua.R
 import net.zionsoft.joshua.model.domain.TranslationInfo
 import net.zionsoft.joshua.model.domain.VerseIndex
+
 
 class ReadingToolbar : Toolbar, ToolbarView {
     private var presenter: ToolbarPresenter? = null
@@ -45,6 +48,7 @@ class ReadingToolbar : Toolbar, ToolbarView {
 
     private fun init() {
         setTitle(R.string.app_name)
+        inflateMenu(R.menu.activity_reading)
     }
 
     override fun onReadingProgressUpdated(readingProgress: VerseIndex) {
@@ -74,6 +78,18 @@ class ReadingToolbar : Toolbar, ToolbarView {
         TODO("not implemented")
     }
 
+    override fun onTranslationsLoaded(translations: List<TranslationInfo>) {
+        val translationsSpinner = MenuItemCompat.getActionView(menu.findItem(R.id.translations)) as Spinner
+        val adapter = TranslationSpinnerAdapter(context, translations)
+        translationsSpinner.adapter = adapter
+        translationsSpinner.setSelection(0)
+        translationsSpinner.onItemSelectedListener = adapter;
+    }
+
+    override fun onTranslationsLoadFailed() {
+        TODO("not implemented")
+    }
+
     fun setPresenter(presenter: ToolbarPresenter) {
         this.presenter = presenter
     }
@@ -81,6 +97,7 @@ class ReadingToolbar : Toolbar, ToolbarView {
     fun onStart() {
         presenter?.takeView(this)
         presenter?.loadCurrentTranslation()
+        presenter?.loadTranslations()
     }
 
     fun onStop() {

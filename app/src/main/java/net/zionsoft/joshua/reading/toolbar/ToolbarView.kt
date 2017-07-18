@@ -18,7 +18,11 @@
 
 package net.zionsoft.joshua.reading.toolbar
 
+import net.zionsoft.joshua.model.domain.TranslationInfo
 import net.zionsoft.joshua.reading.BaseReadingView
 
 interface ToolbarView : BaseReadingView {
+    fun onTranslationsLoaded(translations: List<TranslationInfo>)
+
+    fun onTranslationsLoadFailed()
 }

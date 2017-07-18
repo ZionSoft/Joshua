@@ -18,8 +18,41 @@
 
 package net.zionsoft.joshua.reading.toolbar
 
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import net.zionsoft.joshua.model.BibleReadingModel
+import net.zionsoft.joshua.model.domain.TranslationInfo
 import net.zionsoft.joshua.reading.BaseReadingPresenter
 
 class ToolbarPresenter(bibleReadingModel: BibleReadingModel) : BaseReadingPresenter<ToolbarView>(bibleReadingModel) {
+    private var loadTranslations: Disposable? = null
+
+    override fun onViewDropped() {
+        disposeLoadTranslations()
+        super.onViewDropped()
+    }
+
+    private fun disposeLoadTranslations() {
+        loadTranslations?.dispose()
+        loadTranslations = null
+    }
+
+    fun loadTranslations() {
+        disposeLoadTranslations()
+        loadTranslations = bibleReadingModel.loadTranslations()
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<List<TranslationInfo>>() {
+                    override fun onSuccess(t: List<TranslationInfo>) {
+                        loadTranslations = null
+                        view?.onTranslationsLoaded(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        loadTranslations = null
+                        view?.onTranslationsLoadFailed()
+                    }
+                })
+    }
 }
