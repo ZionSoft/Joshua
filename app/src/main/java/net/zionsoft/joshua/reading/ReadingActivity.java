@@ -111,7 +111,6 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
         drawerToggle.syncState();
     }
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -147,6 +146,9 @@ public final class ReadingActivity extends BaseActivity implements ReadingView,
 
     @Override
     public void showVerse(@NonNull Verse verse) {
+        if (verse.getText().getWords().size() == 0) {
+            return;
+        }
         verseDetailView.setData(verse);
         verseDetail.animate().translationY(0.0F);
     }
