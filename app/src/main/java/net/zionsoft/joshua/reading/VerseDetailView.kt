@@ -19,6 +19,8 @@
 package net.zionsoft.joshua.reading
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.support.design.widget.TabLayout
 import android.support.v4.widget.NestedScrollView
 import android.util.AttributeSet
@@ -29,6 +31,9 @@ import net.zionsoft.joshua.R
 import net.zionsoft.joshua.model.domain.Verse
 
 class VerseDetailView : LinearLayout, TabLayout.OnTabSelectedListener {
+    private val h = Handler(Looper.getMainLooper())
+    private val runnable = Runnable { -> wordDetailContainer.scrollTo(0, 0) }
+
     private lateinit var tabLayout: TabLayout
     private lateinit var wordDetailContainer: NestedScrollView
     private lateinit var wordDetail: TextView
@@ -66,6 +71,7 @@ class VerseDetailView : LinearLayout, TabLayout.OnTabSelectedListener {
         this.verse = verse
 
         tabLayout.removeAllTabs()
+        wordDetail.text = null
 
         val text = verse.text.text
         val words = verse.text.words
@@ -88,7 +94,11 @@ class VerseDetailView : LinearLayout, TabLayout.OnTabSelectedListener {
     override fun onTabSelected(tab: TabLayout.Tab?) {
         if (verse != null && tab != null) {
             wordDetail.text = verse!!.text.words[tab.position].strongWord.detail
-            wordDetailContainer.scrollTo(0, 0)
+
+            h.removeCallbacks(runnable)
+            h.post(runnable)
+        } else {
+            wordDetail.text = null
         }
     }
 }
