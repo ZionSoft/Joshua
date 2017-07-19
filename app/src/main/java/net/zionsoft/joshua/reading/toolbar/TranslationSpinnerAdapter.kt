@@ -19,29 +19,32 @@
 package net.zionsoft.joshua.reading.toolbar
 
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.BaseAdapter
-import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import net.zionsoft.joshua.R
 import net.zionsoft.joshua.model.domain.TranslationInfo
 
-class TranslationSpinnerAdapter(context: Context, private val translations: List<TranslationInfo>)
+class TranslationSpinnerAdapter(context: Context, private val translations: List<TranslationInfo>, private val currentTranslation: TranslationInfo)
     : BaseAdapter(), AdapterView.OnItemSelectedListener {
     private class DropDownViewHolder(inflater: LayoutInflater, convertView: View?, parent: ViewGroup?) {
         val root: View = convertView ?: inflater.inflate(R.layout.item_translation_spinner_drop_down, parent, false)
-        private val checkbox: CheckBox
+        private val checked: ImageView
         private val title: TextView
 
         init {
-            checkbox = root.findViewById(R.id.checkbox) as CheckBox
+            checked = root.findViewById(R.id.checked) as ImageView
+            checked.setColorFilter(ContextCompat.getColor(checked.context, R.color.primary))
             title = root.findViewById(R.id.title) as TextView
         }
 
-        fun bind(translationInfo: TranslationInfo) {
+        fun bind(translationInfo: TranslationInfo, isCurrent: Boolean) {
+            checked.visibility = if (isCurrent) View.VISIBLE else View.GONE
             title.text = translationInfo.shortName
         }
     }
@@ -72,7 +75,8 @@ class TranslationSpinnerAdapter(context: Context, private val translations: List
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewHolder: DropDownViewHolder = DropDownViewHolder(inflater, convertView, parent)
-        viewHolder.bind(getItem(position))
+        val translationInfo = getItem(position)
+        viewHolder.bind(translationInfo, translationInfo.shortName == currentTranslation.shortName)
         return viewHolder.root
     }
 

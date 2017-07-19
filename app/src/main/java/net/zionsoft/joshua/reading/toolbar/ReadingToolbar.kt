@@ -33,6 +33,7 @@ class ReadingToolbar : Toolbar, ToolbarView {
 
     private val builder = StringBuilder()
     private var currentTranslation: TranslationInfo? = null
+    private var translations: List<TranslationInfo>? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -72,6 +73,19 @@ class ReadingToolbar : Toolbar, ToolbarView {
     override fun onCurrentTranslationInfoLoaded(currentTranslation: TranslationInfo) {
         this.currentTranslation = currentTranslation
         updateTitle()
+        updateSpinner()
+    }
+
+    private fun updateSpinner() {
+        if (translations == null || currentTranslation == null) {
+            return
+        }
+
+        val translationsSpinner = MenuItemCompat.getActionView(menu.findItem(R.id.translations)) as Spinner
+        val adapter = TranslationSpinnerAdapter(context, translations!!, currentTranslation!!)
+        translationsSpinner.adapter = adapter
+        translationsSpinner.setSelection(0)
+        translationsSpinner.onItemSelectedListener = adapter;
     }
 
     override fun onCurrentTranslationInfoLoadFailed() {
@@ -79,11 +93,8 @@ class ReadingToolbar : Toolbar, ToolbarView {
     }
 
     override fun onTranslationsLoaded(translations: List<TranslationInfo>) {
-        val translationsSpinner = MenuItemCompat.getActionView(menu.findItem(R.id.translations)) as Spinner
-        val adapter = TranslationSpinnerAdapter(context, translations)
-        translationsSpinner.adapter = adapter
-        translationsSpinner.setSelection(0)
-        translationsSpinner.onItemSelectedListener = adapter;
+        this.translations = translations
+        updateSpinner()
     }
 
     override fun onTranslationsLoadFailed() {
