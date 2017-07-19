@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha6'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
     }
 }
 
@@ -39,7 +39,7 @@ ext {
     supportLibraryVersion = '25.4.0'
 
     daggerVersion = '2.11'
-    butterKnifeVersion = '8.6.0'
+    butterKnifeVersion = '8.7.0'
 
     rxJavaVersion = '2.1.1'
     rxAndroidVersion = '2.0.1'
