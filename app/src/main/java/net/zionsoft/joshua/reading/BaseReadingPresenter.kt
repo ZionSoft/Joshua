@@ -3,8 +3,6 @@ package net.zionsoft.joshua.reading
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
-import io.reactivex.observers.DisposableSingleObserver
-import io.reactivex.schedulers.Schedulers
 import net.zionsoft.joshua.model.BibleReadingModel
 import net.zionsoft.joshua.model.domain.TranslationInfo
 import net.zionsoft.joshua.model.domain.VerseIndex
@@ -12,11 +10,31 @@ import net.zionsoft.joshua.mvp.MVPPresenter
 
 abstract class BaseReadingPresenter<V : BaseReadingView>(protected val bibleReadingModel: BibleReadingModel) : MVPPresenter<V>() {
     private var observeReadingProgress: Disposable? = null
-    private var loadCurrentTranslation: Disposable? = null
+    private var observeCurrentTranslation: Disposable? = null
 
     override fun onViewTaken() {
         super.onViewTaken()
+        observeCurrentTranslation()
         observeReadingProgress()
+    }
+
+    private fun observeCurrentTranslation() {
+        disposeObserveCurrentTranslation()
+        observeCurrentTranslation = bibleReadingModel.observeCurrentTranslation()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<TranslationInfo>() {
+                    override fun onComplete() {
+                        // won't reach here
+                    }
+
+                    override fun onError(e: Throwable) {
+                        // won't reach here
+                    }
+
+                    override fun onNext(currentTranslation: TranslationInfo) {
+                        view?.onCurrentTranslationUpdated(currentTranslation)
+                    }
+                })
     }
 
     private fun observeReadingProgress() {
@@ -39,9 +57,14 @@ abstract class BaseReadingPresenter<V : BaseReadingView>(protected val bibleRead
     }
 
     override fun onViewDropped() {
+        disposeObserveCurrentTranslation()
         disposeObserveReadingProgress()
-        disposeLoadCurrentTranslation()
         super.onViewDropped()
+    }
+
+    private fun disposeObserveCurrentTranslation() {
+        observeCurrentTranslation?.dispose()
+        observeCurrentTranslation = null
     }
 
     private fun disposeObserveReadingProgress() {
@@ -49,26 +72,8 @@ abstract class BaseReadingPresenter<V : BaseReadingView>(protected val bibleRead
         observeReadingProgress = null
     }
 
-    private fun disposeLoadCurrentTranslation() {
-        loadCurrentTranslation?.dispose()
-        loadCurrentTranslation = null
-    }
-
-    fun loadCurrentTranslation() {
-        disposeLoadCurrentTranslation()
-        loadCurrentTranslation = bibleReadingModel.loadCurrentTranslation()
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<TranslationInfo>() {
-                    override fun onSuccess(t: TranslationInfo) {
-                        loadCurrentTranslation = null
-                        view?.onCurrentTranslationInfoLoaded(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        loadCurrentTranslation = null
-                        view?.onCurrentTranslationInfoLoadFailed()
-                    }
-                })
+    fun updateCurrentTranslation(translation: TranslationInfo) {
+        bibleReadingModel.updateCurrentTranslation(translation)
     }
 
     fun getCurrentBook(): Int {

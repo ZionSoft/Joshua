@@ -23,9 +23,7 @@ import net.zionsoft.joshua.model.domain.VerseIndex
 import net.zionsoft.joshua.mvp.MVPView
 
 interface BaseReadingView : MVPView {
+    fun onCurrentTranslationUpdated(currentTranslation: TranslationInfo)
+
     fun onReadingProgressUpdated(readingProgress: VerseIndex)
-
-    fun onCurrentTranslationInfoLoaded(currentTranslation: TranslationInfo)
-
-    fun onCurrentTranslationInfoLoadFailed()
 }

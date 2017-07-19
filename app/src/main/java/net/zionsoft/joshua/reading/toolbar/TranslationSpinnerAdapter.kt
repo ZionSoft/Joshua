@@ -23,15 +23,13 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import net.zionsoft.joshua.R
 import net.zionsoft.joshua.model.domain.TranslationInfo
 
-class TranslationSpinnerAdapter(context: Context, private val translations: List<TranslationInfo>, private val currentTranslation: TranslationInfo)
-    : BaseAdapter(), AdapterView.OnItemSelectedListener {
+class TranslationSpinnerAdapter(context: Context, private val translations: List<TranslationInfo>) : BaseAdapter() {
     private class DropDownViewHolder(inflater: LayoutInflater, convertView: View?, parent: ViewGroup?) {
         val root: View = convertView ?: inflater.inflate(R.layout.item_translation_spinner_drop_down, parent, false)
         private val checked: ImageView
@@ -50,9 +48,10 @@ class TranslationSpinnerAdapter(context: Context, private val translations: List
     }
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
+    private var currentTranslation: TranslationInfo? = null
 
     override fun getCount(): Int {
-        return translations.size
+        return if (currentTranslation != null) translations.size else 0
     }
 
     override fun getItem(position: Int): TranslationInfo {
@@ -76,15 +75,12 @@ class TranslationSpinnerAdapter(context: Context, private val translations: List
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val viewHolder: DropDownViewHolder = DropDownViewHolder(inflater, convertView, parent)
         val translationInfo = getItem(position)
-        viewHolder.bind(translationInfo, translationInfo.shortName == currentTranslation.shortName)
+        viewHolder.bind(translationInfo, translationInfo.shortName == currentTranslation?.shortName)
         return viewHolder.root
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        // do nothing
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        // TODO
+    fun setCurrentTranslation(currentTranslation: TranslationInfo) {
+        this.currentTranslation = currentTranslation
+        notifyDataSetChanged()
     }
 }

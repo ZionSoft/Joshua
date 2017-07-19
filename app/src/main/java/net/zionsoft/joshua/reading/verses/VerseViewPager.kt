@@ -85,12 +85,8 @@ class VerseViewPager : ViewPager, VerseView, VersePage.VerseProvider {
         setCurrentItem(indexToPosition(currentBook, currentChapter), true)
     }
 
-    override fun onCurrentTranslationInfoLoaded(currentTranslation: TranslationInfo) {
+    override fun onCurrentTranslationUpdated(currentTranslation: TranslationInfo) {
         // TODO
-    }
-
-    override fun onCurrentTranslationInfoLoadFailed() {
-        TODO("not implemented")
     }
 
     override fun loadVerses(book: Int, chapter: Int): Single<List<Verse>> {
@@ -102,7 +98,6 @@ class VerseViewPager : ViewPager, VerseView, VersePage.VerseProvider {
 
         currentBook = presenter?.getCurrentBook() ?: 0
         currentChapter = presenter?.getCurrentChapter() ?: 0
-        presenter?.loadCurrentTranslation()
     }
 
     fun onStop() {

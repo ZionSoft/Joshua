@@ -22,16 +22,19 @@ import android.content.Context
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Spinner
 import net.zionsoft.joshua.R
 import net.zionsoft.joshua.model.domain.TranslationInfo
 import net.zionsoft.joshua.model.domain.VerseIndex
 
 
-class ReadingToolbar : Toolbar, ToolbarView {
-    private var presenter: ToolbarPresenter? = null
-
+class ReadingToolbar : Toolbar, ToolbarView, AdapterView.OnItemSelectedListener {
     private val builder = StringBuilder()
+
+    private var presenter: ToolbarPresenter? = null
+    private var translationAdapter: TranslationSpinnerAdapter? = null
     private var currentTranslation: TranslationInfo? = null
     private var translations: List<TranslationInfo>? = null
 
@@ -64,41 +67,43 @@ class ReadingToolbar : Toolbar, ToolbarView {
         synchronized(builder, {
             builder.setLength(0)
 
-            val currentBook = currentTranslation!!.books.get(presenter?.getCurrentBook() ?: 0)
+            val currentBook = currentTranslation!!.books[presenter?.getCurrentBook() ?: 0]
             builder.append(currentBook.shortName).append(", ").append((presenter?.getCurrentChapter() ?: 0) + 1)
             title = builder.toString()
         })
     }
 
-    override fun onCurrentTranslationInfoLoaded(currentTranslation: TranslationInfo) {
+    override fun onCurrentTranslationUpdated(currentTranslation: TranslationInfo) {
         this.currentTranslation = currentTranslation
+        translationAdapter?.setCurrentTranslation(currentTranslation)
         updateTitle()
-        updateSpinner()
-    }
-
-    private fun updateSpinner() {
-        if (translations == null || currentTranslation == null) {
-            return
-        }
-
-        val translationsSpinner = MenuItemCompat.getActionView(menu.findItem(R.id.translations)) as Spinner
-        val adapter = TranslationSpinnerAdapter(context, translations!!, currentTranslation!!)
-        translationsSpinner.adapter = adapter
-        translationsSpinner.setSelection(0)
-        translationsSpinner.onItemSelectedListener = adapter;
-    }
-
-    override fun onCurrentTranslationInfoLoadFailed() {
-        TODO("not implemented")
     }
 
     override fun onTranslationsLoaded(translations: List<TranslationInfo>) {
         this.translations = translations
-        updateSpinner()
+
+        val translationsSpinner = MenuItemCompat.getActionView(menu.findItem(R.id.translations)) as Spinner
+        translationAdapter = TranslationSpinnerAdapter(context, translations)
+        if (currentTranslation != null) {
+            translationAdapter?.setCurrentTranslation(currentTranslation!!)
+        }
+        translationsSpinner.adapter = translationAdapter
+        translationsSpinner.setSelection(0)
+        translationsSpinner.onItemSelectedListener = this
     }
 
     override fun onTranslationsLoadFailed() {
         TODO("not implemented")
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        // do nothing
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        currentTranslation = translations!![position]
+        translationAdapter?.setCurrentTranslation(currentTranslation!!)
+        presenter?.updateCurrentTranslation(currentTranslation!!)
     }
 
     fun setPresenter(presenter: ToolbarPresenter) {
@@ -107,7 +112,6 @@ class ReadingToolbar : Toolbar, ToolbarView {
 
     fun onStart() {
         presenter?.takeView(this)
-        presenter?.loadCurrentTranslation()
         presenter?.loadTranslations()
     }
 
